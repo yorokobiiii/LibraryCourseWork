@@ -1,0 +1,48 @@
+@page "/addbook"
+@using LibraryOnline.Models
+@using LibraryOnline.Services
+@inject IBookService BookService
+@inject NavigationManager Navigation
+
+<h3>➕ Добавление новой книги</h3>
+
+<EditForm Model="@newBook" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+
+    <div class="mb-3">
+        <label class="form-label">Название *</label>
+        <InputText class="form-control" @bind-Value="newBook.Title" />
+        <ValidationMessage For="@(() => newBook.Title)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Автор *</label>
+        <InputText class="form-control" @bind-Value="newBook.Author" />
+        <ValidationMessage For="@(() => newBook.Author)" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Жанр</label>
+        <InputText class="form-control" @bind-Value="newBook.Genre" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Год</label>
+        <InputNumber class="form-control" @bind-Value="newBook.Year" />
+        <ValidationMessage For="@(() => newBook.Year)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+    <a href="/" class="btn btn-secondary">Отмена</a>
+</EditForm>
+
+@code {
+    private Book newBook = new Book();
+
+    private async Task HandleValidSubmit()
+    {
+        await BookService.AddBookAsync(newBook);
+        Navigation.NavigateTo("/");
+    }
+}

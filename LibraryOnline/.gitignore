@@ -1,0 +1,62 @@
+# Build outputs
+bin/
+obj/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+.vscode/
+*.swp
+*.swo
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+**/logs/
+
+# Docker
+*.pid
+*.pid.lock
+*.dockerignore
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Publish output
+/publish/
+/PublishProfiles/
+
+# IDE
+.idea/
+*.sln.iml
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.tmp

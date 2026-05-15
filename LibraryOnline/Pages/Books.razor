@@ -1,0 +1,90 @@
+@page "/"
+@using LibraryOnline.Models
+@using LibraryOnline.Services
+@inject IBookService BookService
+
+<h3>📚 Библиотека книг</h3>
+
+<!-- Форма поиска -->
+<div class="row mb-3">
+    <div class="col-md-6">
+        <input type="text" class="form-control" 
+               placeholder="🔍 Поиск по названию, автору или жанру..." 
+               @bind="searchTerm" 
+               @bind:event="oninput" />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" @onclick="SearchBooks">Найти</button>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-secondary" @onclick="ResetSearch">Сбросить</button>
+    </div>
+    <div class="col-md-2">
+        <a href="/addbook" class="btn btn-success">+ Добавить книгу</a>
+    </div>
+</div>
+
+<!-- Статистика -->
+@if (books != null)
+{
+    <div class="alert alert-info">
+        Найдено книг: @books.Count
+    </div>
+}
+
+<!-- Таблица с книгами -->
+@if (books == null)
+{
+    <p>Загрузка...</p>
+}
+else if (!books.Any())
+{
+    <div class="alert alert-warning">
+        😢 Книги не найдены. Попробуйте другой запрос или добавьте книгу!
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Жанр</th>
+                <th>Год</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in books)
+            {
+                <tr>
+                    <td><strong>@book.Title</strong></td>
+                    <td>@book.Author</td>
+                    <td>@book.Genre</td>
+                    <td>@book.Year</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string searchTerm = "";
+    private List<Book> books = new List<Book>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SearchBooks();
+    }
+
+    private async Task SearchBooks()
+    {
+        books = await BookService.SearchBooksAsync(searchTerm);
+    }
+
+    private async Task ResetSearch()
+    {
+        searchTerm = "";
+        books = await BookService.GetAllBooksAsync();
+    }
+}
