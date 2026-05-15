@@ -8,11 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// === ПОДКЛЮЧЕНИЕ БАЗЫ ДАННЫХ (как в ПР №2 и №3) ===
+//подключение базы данных
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite("Data Source=library.db"));
 
-// === РЕГИСТРАЦИЯ НАШЕГО СЕРВИСА (как в ПР №3) ===
+//регистрация сервера
 builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
@@ -31,7 +31,7 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-// === API ЭНДПОИНТЫ (как в ПР №3) ===
+//эндпоинты
 app.MapGet("/api/books", async (LibraryContext db) =>
 {
     return await db.Books.ToListAsync();
